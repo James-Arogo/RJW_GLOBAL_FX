@@ -1,0 +1,381 @@
+═══════════════════════════════════════════════════════════════════════════════
+                  🚀 HOW TO RUN RJW GLOBAL FX IN YOUR WEB BROWSER
+═══════════════════════════════════════════════════════════════════════════════
+
+✨ COMPLETE STEP-BY-STEP GUIDE
+
+═══════════════════════════════════════════════════════════════════════════════
+REQUIREMENTS
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ Python 3.8+ installed
+✅ Terminal/Command Prompt access
+✅ Web browser (Chrome, Firefox, Safari, Edge)
+✅ 5 minutes of time
+
+Check Python:
+  python3 --version
+  (Should show Python 3.8 or higher)
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 1: OPEN TWO TERMINALS
+═══════════════════════════════════════════════════════════════════════════════
+
+You need 2 terminal windows/tabs open:
+
+□ TERMINAL 1: For backend (Flask server)
+□ TERMINAL 2: For frontend (Web server)
+
+Keep both open while using the app!
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 2: BACKEND SETUP (Terminal 1)
+═══════════════════════════════════════════════════════════════════════════════
+
+Copy & paste these commands in TERMINAL 1:
+
+┌─ Command 1: Navigate to project
+└─ cd ~/Desktop/RJW_GLOBAL_FX/
+
+┌─ Command 2: Create Python virtual environment
+└─ python3 -m venv venv
+
+┌─ Command 3: Activate virtual environment
+└─ source venv/bin/activate
+   (On Windows: venv\Scripts\activate)
+   
+   ✅ You should see (venv) in your terminal prompt
+
+┌─ Command 4: Navigate to backend
+└─ cd backend
+
+┌─ Command 5: Install dependencies (THIS MAY TAKE 2-3 MINUTES)
+└─ pip install -r requirements.txt
+
+   ✅ Wait for it to complete (should show "Successfully installed")
+
+┌─ Command 6: Start the backend server
+└─ python app.py
+
+   ✅ WAIT FOR THIS MESSAGE:
+       * Running on http://0.0.0.0:4000
+       * Press CTRL+C to quit
+
+   🟢 Backend is now running!
+   
+   ⚠️ DO NOT CLOSE THIS TERMINAL!
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 3: FRONTEND SETUP (Terminal 2 - NEW TERMINAL/TAB)
+═══════════════════════════════════════════════════════════════════════════════
+
+Open a NEW terminal tab/window and copy & paste:
+
+┌─ Command 1: Navigate to web directory
+└─ cd ~/Desktop/RJW_GLOBAL_FX/web
+
+┌─ Command 2: Start the web server
+└─ python3 -m http.server 8000
+
+   ✅ YOU SHOULD SEE:
+       Serving HTTP on 0.0.0.0 port 8000 (http://0.0.0.0:8000/) ...
+
+   🟢 Frontend is now running!
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 4: OPEN IN WEB BROWSER
+═══════════════════════════════════════════════════════════════════════════════
+
+Open your web browser and go to:
+
+   👉 http://localhost:8000
+
+You should see:
+  ✅ RJW GLOBAL FX Landing Page
+  ✅ Purple gradient header
+  ✅ "Get Started" button
+  ✅ Features listed
+  ✅ Login/Register buttons
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 5: CREATE ACCOUNT & LOGIN
+═══════════════════════════════════════════════════════════════════════════════
+
+1️⃣ Click "Register" button
+
+2️⃣ Fill in the form:
+   - Username: testuser (or your name)
+   - Email: test@university.edu (or your email)
+   - Password: TestPass123! (must have: uppercase, number, special)
+   - Click "Register"
+
+3️⃣ You should see success message
+
+4️⃣ Click "Login"
+   - Username: testuser
+   - Password: TestPass123!
+   - Click "Login"
+
+5️⃣ You should see the DASHBOARD with:
+   ✅ Your balance: KES 129,500
+   ✅ "Active Trades" section
+   ✅ Live prices updating
+   ✅ Navigation buttons
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 6: EXECUTE YOUR FIRST TRADE
+═══════════════════════════════════════════════════════════════════════════════
+
+On the Dashboard:
+
+1️⃣ See the price grid with currency pairs:
+   - EUR/USD
+   - GBP/USD
+   - USD/JPY
+   - And 5 more...
+
+2️⃣ Click on "EUR/USD" or "GBP/USD"
+
+3️⃣ You should see the trade form:
+   - Pair: EUR/USD
+   - Trade Type: BUY / SELL
+   - Amount: (in KSH)
+   - Stop Loss
+   - Take Profit
+
+4️⃣ Fill in:
+   - Trade Type: Click "BUY"
+   - Amount: 5000 (KSH)
+   - Stop Loss: 500
+   - Take Profit: 1000
+   - Click "Execute Trade"
+
+5️⃣ You should see:
+   ✅ "Trade executed successfully" message
+   ✅ Your balance changed
+   ✅ Trade appears in "Recent Trades" section
+
+═══════════════════════════════════════════════════════════════════════════════
+STEP 7: EXPLORE THE APP
+═══════════════════════════════════════════════════════════════════════════════
+
+Try these features:
+
+📊 ANALYTICS PAGE
+   - Click "Analytics" in navbar
+   - See your performance metrics
+   - View win rate, P&L, daily earnings
+   - See risk metrics
+   - View pair comparison
+
+🏆 LEADERBOARD
+   - Click "Leaderboard"
+   - See top traders
+   - Check your ranking
+   - See how others are performing
+
+👤 PROFILE
+   - Click "Profile"
+   - See your account details
+   - View your statistics
+
+📈 STUDENT DASHBOARD (NEW!)
+   - Look for "📈 Student Dashboard" link in navbar
+   - See all 9 sections:
+     1. Market header
+     2. Account summary (KSH)
+     3. Trading tips carousel
+     4. Live prices
+     5. Technical chart
+     6. Quick trade panel
+     7. Recent trades
+     8. Leaderboard preview
+     9. Education center
+
+═══════════════════════════════════════════════════════════════════════════════
+TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════════════════════
+
+❌ PROBLEM: "ModuleNotFoundError: No module named 'flask'"
+✅ SOLUTION: 
+   - Make sure you ran: pip install -r requirements.txt
+   - Try again: pip install flask flask-cors
+
+❌ PROBLEM: "Port 4000 is already in use"
+✅ SOLUTION:
+   - Close other apps using port 4000
+   - Or edit backend/app.py and change port from 4000 to 5000
+   - Then access http://localhost:4000 becomes http://localhost:5000
+
+❌ PROBLEM: "Port 8000 is already in use"
+✅ SOLUTION:
+   - Use different port: python3 -m http.server 8001
+   - Then access http://localhost:8001
+
+❌ PROBLEM: "Page not loading / blank page"
+✅ SOLUTION:
+   - Hard refresh browser: Ctrl+Shift+R (Windows/Linux) or Cmd+Shift+R (Mac)
+   - Check if both servers are running (check terminal windows)
+
+❌ PROBLEM: "Cannot login / Backend error"
+✅ SOLUTION:
+   - Check Terminal 1 shows "Running on http://0.0.0.0:4000"
+   - If not, check for error messages
+   - Restart backend: Ctrl+C then python app.py
+
+❌ PROBLEM: "Prices not updating"
+✅ SOLUTION:
+   - Refresh the page
+   - Click the "🔄 Refresh" button
+   - Check that Terminal 1 backend is still running
+
+❌ PROBLEM: "Cannot execute trade"
+✅ SOLUTION:
+   - Make sure you're logged in
+   - Check your balance is high enough
+   - Minimum amount is 1,000 KSH
+   - Make sure stop loss < take profit
+
+═══════════════════════════════════════════════════════════════════════════════
+IMPORTANT THINGS TO REMEMBER
+═══════════════════════════════════════════════════════════════════════════════
+
+✅ Keep BOTH terminals open (don't close them)
+✅ Backend terminal should show "Running on http://0.0.0.0:4000"
+✅ Frontend terminal should show "Serving HTTP on 0.0.0.0 port 8000"
+✅ If you close a terminal, the server stops
+✅ To stop: Press Ctrl+C in each terminal
+✅ All your trades are saved in database.db
+
+═══════════════════════════════════════════════════════════════════════════════
+URLS TO REMEMBER
+═══════════════════════════════════════════════════════════════════════════════
+
+Main App:            http://localhost:8000
+Backend API:         http://localhost:4000
+Live Prices API:     http://localhost:4000/api/trade/live_prices
+Backend Home:        http://localhost:4000/
+
+═══════════════════════════════════════════════════════════════════════════════
+NEXT TIME YOU RUN THE PROJECT
+═══════════════════════════════════════════════════════════════════════════════
+
+It's faster next time! Just run:
+
+Terminal 1:
+  cd ~/Desktop/RJW_GLOBAL_FX/backend
+  source venv/bin/activate      (Mac/Linux)
+  venv\Scripts\activate          (Windows)
+  python app.py
+
+Terminal 2:
+  cd ~/Desktop/RJW_GLOBAL_FX/web
+  python3 -m http.server 8000
+
+Browser:
+  http://localhost:8000
+
+═══════════════════════════════════════════════════════════════════════════════
+TESTING TIPS
+═══════════════════════════════════════════════════════════════════════════════
+
+Try these to learn:
+
+1. CREATE MULTIPLE ACCOUNTS
+   - testuser1, testuser2, testuser3
+   - Compete with yourself (practice trading)
+
+2. EXECUTE DIFFERENT TRADES
+   - Try different pairs (EUR/USD, GBP/USD, BTC/USD)
+   - Try BUY and SELL
+   - Try different amounts (1K, 5K, 10K, 25K)
+
+3. WATCH PRICES CHANGE
+   - Prices update every 2 seconds
+   - Some pairs move more than others
+   - Gold and Bitcoin are volatile
+   - EUR/USD is calm
+
+4. TRACK YOUR PERFORMANCE
+   - Check Analytics page
+   - Watch your win rate
+   - Monitor your P&L
+   - Check your level progression
+
+5. READ THE GUIDES
+   - STUDENT_TRADING_GUIDE.md - Learn how to trade
+   - STUDENT_EDITION_SUMMARY.md - Feature overview
+   - WEB_QUICKSTART.md - Detailed setup guide
+
+═══════════════════════════════════════════════════════════════════════════════
+DOCUMENTATION FILES
+═══════════════════════════════════════════════════════════════════════════════
+
+Read these in this order:
+
+1. RUN_PROJECT.txt (THIS FILE)
+   └─ How to run the project (you are here!)
+
+2. WEB_QUICKSTART.md
+   └─ Detailed setup guide with troubleshooting
+
+3. STUDENT_TRADING_GUIDE.md
+   └─ Learn forex trading (2,000+ lines!)
+
+4. STUDENT_EDITION_SUMMARY.md
+   └─ Features overview
+
+5. REALTIME_ANALYTICS_GUIDE.md
+   └─ Understanding the analytics
+
+═══════════════════════════════════════════════════════════════════════════════
+QUICK CHECKLIST
+═══════════════════════════════════════════════════════════════════════════════
+
+Before you start:
+  □ Python 3.8+ installed
+  □ Two terminal windows open
+
+Setup:
+  □ Backend: Created venv, installed requirements, running on :4000
+  □ Frontend: Running on :8000
+
+Testing:
+  □ Browser loads http://localhost:8000
+  □ Can register account
+  □ Can login
+  □ See KES 129,500 balance
+  □ Can execute a trade
+  □ Prices are updating
+  □ Can see analytics
+
+Success:
+  □ Everything working!
+  □ Ready to learn forex trading
+  □ Ready to compete on leaderboard
+  □ Ready to climb from Beginner to Expert level
+
+═══════════════════════════════════════════════════════════════════════════════
+CONGRATS! 🎉
+═══════════════════════════════════════════════════════════════════════════════
+
+You now have RJW GLOBAL FX running on your computer!
+
+Next steps:
+  1. Read STUDENT_TRADING_GUIDE.md to learn trading
+  2. Execute 5+ trades to understand the platform
+  3. Try to reach 50%+ win rate
+  4. Climb the leaderboard to become Expert level
+  5. Have fun and learn! 📈💹
+
+═══════════════════════════════════════════════════════════════════════════════
+
+Questions? Check WEB_QUICKSTART.md for more details!
+
+Happy Trading! 🚀📊
+
+═══════════════════════════════════════════════════════════════════════════════
+Version: 1.0.0
+Last Updated: January 28, 2026
+Status: ✅ Ready to Use
+═══════════════════════════════════════════════════════════════════════════════

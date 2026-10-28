@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RJW GLOBAL FX - Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        header h1 { color: #1e3c72; margin-bottom: 10px; }
+        header p { color: #666; font-size: 16px; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 8px 12px rgba(0,0,0,0.2); }
+        .card h3 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #2a5298;
+            padding-bottom: 10px;
+        }
+        .endpoint {
+            padding: 12px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-left: 4px solid #2a5298;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+            margin-right: 8px;
+            font-size: 11px;
+        }
+        .method.post { background: #28a745; }
+        .method.get { background: #007bff; }
+        .method.delete { background: #dc3545; }
+        .status {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: #28a745;
+            color: white;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #2a5298;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        a:hover { background: #1e3c72; }
+        footer {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            color: #666;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💹 RJW GLOBAL FX - Backend Dashboard</h1>
+            <p>Forex Trading Simulation Platform</p>
+            <span class="status">✓ Server Running</span>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h3>🔐 Authentication Endpoints</h3>
+                <div class="endpoint"><span class="method post">POST</span>/api/auth/register</div>
+                <div class="endpoint"><span class="method post">POST</span>/api/auth/login</div>
+                <div class="endpoint"><span class="method post">POST</span>/api/auth/refresh</div>
+                <div class="endpoint"><span class="method get">GET</span>/api/auth/profile</div>
+                <div class="endpoint"><span class="method post">POST</span>/api/auth/logout</div>
+            </div>
+
+            <div class="card">
+                <h3>💱 Trading Endpoints</h3>
+                <div class="endpoint"><span class="method get">GET</span>/api/trade/live_prices</div>
+                <div class="endpoint"><span class="method post">POST</span>/api/trade/trade</div>
+                <div class="endpoint"><span class="method get">GET</span>/api/trade/history/{username}</div>
+                <div class="endpoint"><span class="method get">GET</span>/api/trade/portfolio/{username}</div>
+            </div>
+
+            <div class="card">
+                <h3>📊 Analytics Endpoints</h3>
+                <div class="endpoint"><span class="method get">GET</span>/api/analytics/user/performance</div>
+                <div class="endpoint"><span class="method get">GET</span>/api/analytics/user/risk</div>
+                <div class="endpoint"><span class="method get">GET</span>/api/analytics/platform/statistics</div>
+                <div class="endpoint"><span class="method get">GET</span>/api/analytics/user/leaderboard</div>
+            </div>
+
+            <div class="card">
+                <h3>📋 Order Management</h3>
+                <div class="endpoint"><span class="method post">POST</span>/api/orders/limit</div>
+                <div class="endpoint"><span class="method post">POST</span>/api/orders/stop_loss</div>
+                <div class="endpoint"><span class="method post">POST</span>/api/orders/take_profit</div>
+                <div class="endpoint"><span class="method delete">DELETE</span>/api/orders/cancel/{id}</div>
+                <div class="endpoint"><span class="method get">GET</span>/api/orders/list</div>
+            </div>
+
+            <div class="card">
+                <h3>⚙️ System Status</h3>
+                <div class="endpoint"><span class="method get">GET</span>/api/admin/status</div>
+                <p style="margin-top: 15px; color: #666; font-size: 14px;">
+                    <strong>Database:</strong> SQLite (Development)<br>
+                    <strong>Port:</strong> 4000<br>
+                    <strong>Environment:</strong> Development
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>🚀 Quick Start</h3>
+                <p style="margin-bottom: 15px; color: #666;">Test the API using curl or Postman</p>
+                <pre style="background: #f8f9fa; padding: 10px; border-radius: 5px; overflow-x: auto; font-size: 12px;">
+# Register a new user
+curl -X POST http://localhost:4000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username":"trader1",
+    "email":"trader@test.com",
+    "password":"Test123!"
+  }'</pre>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2024 RJW GLOBAL FX | Developed by: RJW~/MAN, ENG~OPELLA, CJO~AROGO</p>
+        </footer>
+    </div>
+</body>
+</html>

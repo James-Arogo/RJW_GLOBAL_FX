@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification - RJW GLOBAL FX</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .status-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .success {
+            color: #27ae60;
+        }
+        
+        .error {
+            color: #e74c3c;
+        }
+        
+        .loading {
+            color: #f39c12;
+        }
+        
+        h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        p {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+        }
+        
+        .btn-success:hover {
+            background-color: #229954;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-details {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">RJW GLOBAL FX</div>
+        
+        <div id="loading-state">
+            <div class="spinner"></div>
+            <h2>Verifying Your Email</h2>
+            <p>Please wait while we verify your email address...</p>
+        </div>
+        
+        <div id="success-state" style="display: none;">
+            <div class="status-icon success">✓</div>
+            <h2>Email Verified Successfully!</h2>
+            <p>Your email address has been verified. You can now log in to your account and start trading.</p>
+            <a href="/api/docs/swagger" class="btn btn-success">Go to API Documentation</a>
+        </div>
+        
+        <div id="error-state" style="display: none;">
+            <div class="status-icon error">✗</div>
+            <h2>Email Verification Failed</h2>
+            <p id="error-message">We couldn't verify your email address. The verification link may be invalid or has expired.</p>
+            <div class="error-details">
+                <p><strong>Troubleshooting:</strong></p>
+                <ul>
+                    <li>Check if the verification link has expired (24 hours)</li>
+                    <li>Request a new verification email</li>
+                    <li>Contact support if the issue persists</li>
+                </ul>
+            </div>
+            <a href="#" onclick="requestNewVerification()" class="btn">Request New Verification</a>
+        </div>
+    </div>
+
+    <script>
+        // Get token from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        
+        if (!token) {
+            showError('No verification token provided. Please check your email link.');
+        } else {
+            verifyEmail(token);
+        }
+        
+        async function verifyEmail(token) {
+            try {
+                const response = await fetch('/api/auth/verify-email', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ token: token })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showSuccess();
+                } else {
+                    showError(data.message || 'Verification failed');
+                }
+            } catch (error) {
+                showError('Network error. Please check your connection and try again.');
+            }
+        }
+        
+        function showSuccess() {
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('success-state').style.display = 'block';
+            document.getElementById('error-state').style.display = 'none';
+        }
+        
+        function showError(message) {
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('success-state').style.display = 'none';
+            document.getElementById('error-state').style.display = 'block';
+            document.getElementById('error-message').textContent = message;
+        }
+        
+        async function requestNewVerification() {
+            const email = prompt('Please enter your email address:');
+            if (email) {
+                try {
+                    const response = await fetch('/api/auth/resend-verification', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email: email })
+                    });
+                    
+                    const data = await response.json();
+                    alert(data.message || 'Verification email sent!');
+                } catch (error) {
+                    alert('Error sending verification email. Please try again.');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

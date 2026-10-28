@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RJW GLOBAL FX - API Documentation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+            border-radius: 10px;
+        }
+        header h1 { font-size: 32px; margin-bottom: 10px; }
+        header p { font-size: 16px; opacity: 0.9; }
+        
+        .section {
+            background: white;
+            margin-bottom: 30px;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #2a5298;
+            padding-bottom: 10px;
+        }
+        .section h3 {
+            color: #2a5298;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .endpoint {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 5px solid #2a5298;
+            border-radius: 5px;
+        }
+        .method {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 13px;
+        }
+        .method.post { background: #28a745; }
+        .method.get { background: #007bff; }
+        .method.delete { background: #dc3545; }
+        .method.put { background: #fd7e14; }
+        
+        .path {
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            word-break: break-all;
+        }
+        
+        .param, .response {
+            background: #f0f0f0;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            overflow-x: auto;
+        }
+        
+        .curl-example {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+        
+        .required { color: #dc3545; font-weight: bold; }
+        .optional { color: #6c757d; }
+        
+        table {
+            width: 100%;
+            margin: 15px 0;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background: #1e3c72;
+            color: white;
+        }
+        tr:nth-child(even) { background: #f8f9fa; }
+        
+        .toc {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 5px solid #2a5298;
+        }
+        .toc ul { margin-left: 20px; list-style: none; }
+        .toc li { margin: 8px 0; }
+        .toc a { color: #2a5298; text-decoration: none; }
+        .toc a:hover { text-decoration: underline; }
+        
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre { font-size: 13px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 RJW GLOBAL FX API Documentation</h1>
+            <p>Complete API Reference for Forex Trading Platform</p>
+        </header>
+        
+        <div class="toc">
+            <h3>📑 Table of Contents</h3>
+            <ul>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#authentication">Authentication</a></li>
+                <li><a href="#trading">Trading Endpoints</a></li>
+                <li><a href="#analytics">Analytics Endpoints</a></li>
+                <li><a href="#orders">Order Management</a></li>
+                <li><a href="#response-format">Response Format</a></li>
+                <li><a href="#error-codes">Error Codes</a></li>
+            </ul>
+        </div>
+        
+        <!-- Overview Section -->
+        <div class="section" id="overview">
+            <h2>📌 Overview</h2>
+            <p>The RJW GLOBAL FX API provides real-time forex trading simulation with advanced analytics and risk management.</p>
+            <table>
+                <tr>
+                    <th>Property</th>
+                    <th>Value</th>
+                </tr>
+                <tr>
+                    <td><strong>Base URL</strong></td>
+                    <td>http://localhost:4000/api</td>
+                </tr>
+                <tr>
+                    <td><strong>Authentication</strong></td>
+                    <td>JWT Bearer Token</td>
+                </tr>
+                <tr>
+                    <td><strong>Content-Type</strong></td>
+                    <td>application/json</td>
+                </tr>
+                <tr>
+                    <td><strong>Rate Limit</strong></td>
+                    <td>100 requests/minute</td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- Authentication Section -->
+        <div class="section" id="authentication">
+            <h2>🔐 Authentication</h2>
+            
+            <h3>Register User</h3>
+            <div class="endpoint">
+                <div><span class="method post">POST</span><span class="path">/api/auth/register</span></div>
+                <p style="margin-top: 10px;">Create a new user account</p>
+                <h4>Request Body:</h4>
+                <div class="param">
+{
+  "username": "trader1",
+  "email": "trader@example.com",
+  "password": "SecurePass123!"
+}
+                </div>
+                <h4>Success Response (201):</h4>
+                <div class="response">
+{
+  "status": "success",
+  "code": 201,
+  "message": "Registration successful...",
+  "data": null,
+  "timestamp": "2024-01-28T..."
+}
+                </div>
+                <h4>cURL Example:</h4>
+                <div class="curl-example">
+curl -X POST http://localhost:4000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "username": "trader1",
+    "email": "trader@example.com",
+    "password": "SecurePass123!"
+  }'
+                </div>
+            </div>
+            
+            <h3>Login</h3>
+            <div class="endpoint">
+                <div><span class="method post">POST</span><span class="path">/api/auth/login</span></div>
+                <p style="margin-top: 10px;">Authenticate and receive JWT token</p>
+                <h4>Request Body:</h4>
+                <div class="param">
+{
+  "username": "trader1",
+  "password": "SecurePass123!"
+}
+                </div>
+                <h4>Success Response (200):</h4>
+                <div class="response">
+{
+  "status": "success",
+  "data": {
+    "access_token": "eyJ0eXAiOiJKV1Q...",
+    "refresh_token": "eyJ0eXAiOiJKV1Q...",
+    "user": {
+      "username": "trader1",
+      "email": "trader@example.com",
+      "balance": 1000.0
+    }
+  }
+}
+                </div>
+            </div>
+            
+            <h3>Authorization Header</h3>
+            <p>Include JWT token in all authenticated requests:</p>
+            <div class="code-block">
+<pre>Authorization: Bearer {access_token}</pre>
+            </div>
+        </div>
+        
+        <!-- Trading Section -->
+        <div class="section" id="trading">
+            <h2>💱 Trading Endpoints</h2>
+            
+            <h3>Get Live Prices</h3>
+            <div class="endpoint">
+                <div><span class="method get">GET</span><span class="path">/api/trade/live_prices</span></div>
+                <p style="margin-top: 10px;">Retrieve current prices for all currency pairs</p>
+                <h4>Parameters:</h4>
+                <p>None</p>
+                <h4>Response Example:</h4>
+                <div class="response">
+{
+  "status": "success",
+  "data": {
+    "EUR/USD": 1.0985,
+    "GBP/USD": 1.2512,
+    "USD/JPY": 145.43,
+    "XAU/USD": 1982.15
+  }
+}
+                </div>
+            </div>
+            
+            <h3>Execute Trade</h3>
+            <div class="endpoint">
+                <div><span class="method post">POST</span><span class="path">/api/trade/trade</span></div>
+                <p style="margin-top: 10px;"><span class="required">REQUIRES AUTH</span> - Execute a market order</p>
+                <h4>Request Body:</h4>
+                <div class="param">
+{
+  "pair": "EUR/USD",
+  "amount": 100.0
+}
+                </div>
+                <h4>Supported Pairs:</h4>
+                <p>EUR/USD, GBP/USD, USD/JPY, XAU/USD, USD/CHF, AUD/USD, NZD/USD, USD/CAD</p>
+            </div>
+        </div>
+        
+        <!-- Analytics Section -->
+        <div class="section" id="analytics">
+            <h2>📊 Analytics Endpoints</h2>
+            
+            <h3>User Performance</h3>
+            <div class="endpoint">
+                <div><span class="method get">GET</span><span class="path">/api/analytics/user/performance</span></div>
+                <p style="margin-top: 10px;"><span class="required">REQUIRES AUTH</span></p>
+                <p>Get comprehensive performance metrics including win rate, Sharpe ratio, and profit factors.</p>
+            </div>
+            
+            <h3>Risk Metrics</h3>
+            <div class="endpoint">
+                <div><span class="method get">GET</span><span class="path">/api/analytics/user/risk</span></div>
+                <p style="margin-top: 10px;"><span class="required">REQUIRES AUTH</span></p>
+                <p>Get risk assessment including volatility, VaR, and expected shortfall.</p>
+            </div>
+            
+            <h3>User Leaderboard</h3>
+            <div class="endpoint">
+                <div><span class="method get">GET</span><span class="path">/api/analytics/user/leaderboard</span></div>
+                <p style="margin-top: 10px;">Get top traders ranked by profit/loss and performance metrics.</p>
+            </div>
+        </div>
+        
+        <!-- Orders Section -->
+        <div class="section" id="orders">
+            <h2>📋 Order Management</h2>
+            
+            <h3>Create Limit Order</h3>
+            <div class="endpoint">
+                <div><span class="method post">POST</span><span class="path">/api/orders/limit</span></div>
+                <p style="margin-top: 10px;"><span class="required">REQUIRES AUTH</span></p>
+                <h4>Request Body:</h4>
+                <div class="param">
+{
+  "pair": "EUR/USD",
+  "amount": 50.0,
+  "price": 1.0950
+}
+                </div>
+            </div>
+            
+            <h3>Create Stop-Loss Order</h3>
+            <div class="endpoint">
+                <div><span class="method post">POST</span><span class="path">/api/orders/stop_loss</span></div>
+                <p style="margin-top: 10px;"><span class="required">REQUIRES AUTH</span></p>
+            </div>
+            
+            <h3>Create Take-Profit Order</h3>
+            <div class="endpoint">
+                <div><span class="method post">POST</span><span class="path">/api/orders/take_profit</span></div>
+                <p style="margin-top: 10px;"><span class="required">REQUIRES AUTH</span></p>
+            </div>
+        </div>
+        
+        <!-- Response Format Section -->
+        <div class="section" id="response-format">
+            <h2>📦 Response Format</h2>
+            <p>All API responses follow this standardized format:</p>
+            <div class="code-block">
+<pre>{
+  "status": "success|error",
+  "code": 200,
+  "message": "Human-readable message",
+  "data": {},
+  "timestamp": "2024-01-28T...",
+  "errors": []
+}</pre>
+            </div>
+        </div>
+        
+        <!-- Error Codes Section -->
+        <div class="section" id="error-codes">
+            <h2>⚠️ Common Error Codes</h2>
+            <table>
+                <tr>
+                    <th>Error Code</th>
+                    <th>HTTP Status</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>BAD_REQUEST</td>
+                    <td>400</td>
+                    <td>Invalid request parameters</td>
+                </tr>
+                <tr>
+                    <td>UNAUTHORIZED</td>
+                    <td>401</td>
+                    <td>Missing or invalid authentication</td>
+                </tr>
+                <tr>
+                    <td>INSUFFICIENT_BALANCE</td>
+                    <td>400</td>
+                    <td>Insufficient funds for transaction</td>
+                </tr>
+                <tr>
+                    <td>NOT_FOUND</td>
+                    <td>404</td>
+                    <td>Resource not found</td>
+                </tr>
+                <tr>
+                    <td>VALIDATION_ERROR</td>
+                    <td>422</td>
+                    <td>Input validation failed</td>
+                </tr>
+                <tr>
+                    <td>RATE_LIMIT_EXCEEDED</td>
+                    <td>429</td>
+                    <td>Too many requests</td>
+                </tr>
+                <tr>
+                    <td>INTERNAL_ERROR</td>
+                    <td>500</td>
+                    <td>Server error</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div style="text-align: center; margin-top: 50px; padding: 20px; color: #666;">
+            <p>© 2024 RJW GLOBAL FX | API v1.0</p>
+        </div>
+    </div>
+</body>
+</html>

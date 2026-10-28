@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RJW GLOBAL FX - Forex Trading Platform</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/tailwind.min.css">
+</head>
+<body class="bg-dark text-white font-sans">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="logo">💹</div>
+                <h1 class="text-2xl font-bold">RJW GLOBAL FX</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <span id="username-display" class="hidden">User: <span id="user-name"></span></span>
+                <button id="nav-dashboard" class="btn btn-secondary hidden" onclick="goToPage('student-dashboard')">📈 Student Dashboard</button>
+                <button id="nav-analytics" class="btn btn-secondary hidden" onclick="goToPage('analytics')">📊 Analytics</button>
+                <button id="nav-leaderboard" class="btn btn-secondary hidden" onclick="goToPage('leaderboard')">🏆 Leaderboard</button>
+                <button id="nav-login" class="btn btn-primary" onclick="goToPage('login')">Login</button>
+                <button id="nav-register" class="btn btn-secondary" onclick="goToPage('register')">Register</button>
+                <button id="nav-logout" class="btn btn-danger hidden" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <!-- Landing Page -->
+        <div id="page-landing" class="page">
+            <div class="hero">
+                <h2 class="text-5xl font-bold mb-4">Professional Forex Trading Simulator</h2>
+                <p class="text-xl text-gray-400 mb-8">Learn, trade, and master forex markets with advanced analytics and real-time simulation.</p>
+                <div class="flex gap-4 justify-center">
+                    <button class="btn btn-primary text-lg px-8 py-3" onclick="goToPage('register')">Get Started Free</button>
+                    <button class="btn btn-outline text-lg px-8 py-3" onclick="scrollToFeatures()">Learn More</button>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <section id="features" class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Virtual Trading</h3>
+                    <p>Trade with $1,000 virtual balance. No real money risk, real learning.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Advanced Analytics</h3>
+                    <p>Track Sharpe ratio, win rate, risk metrics, and professional performance indicators.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Real-Time Prices</h3>
+                    <p>8 currency pairs with realistic bid-ask spreads and Brownian motion pricing.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏆</div>
+                    <h3>Leaderboard</h3>
+                    <p>Compete with other traders and see how you rank globally.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>Advanced Orders</h3>
+                    <p>Limit orders, stop-loss, and take-profit strategies.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Secure Platform</h3>
+                    <p>JWT authentication, rate limiting, and enterprise-grade security.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Login Page -->
+        <div id="page-login" class="page hidden">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h2 class="text-3xl font-bold mb-2">Welcome Back</h2>
+                    <p class="text-gray-400">Login to your trading account</p>
+                </div>
+
+                <div id="login-error" class="error-message hidden mb-4"></div>
+                <div id="login-success" class="success-message hidden mb-4"></div>
+
+                <form id="login-form" onsubmit="handleLogin(event)" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-username" class="form-label">Username</label>
+                        <div class="form-input-wrapper">
+                            <input 
+                                type="text" 
+                                id="login-username" 
+                                name="username"
+                                required 
+                                placeholder="Enter your username" 
+                                class="form-input"
+                                autocomplete="username"
+                            >
+                        </div>
+                        <small class="form-hint">3-50 characters</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password" class="form-label">Password</label>
+                        <div class="form-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="login-password" 
+                                name="password"
+                                required 
+                                placeholder="Enter your password" 
+                                class="form-input"
+                                autocomplete="current-password"
+                            >
+                        </div>
+                        <small class="form-hint">Case-sensitive</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-full py-3 font-semibold">
+                        <span id="login-btn-text">Login</span>
+                        <span id="login-spinner" class="hidden ml-2">⏳</span>
+                    </button>
+                </form>
+
+                <div class="auth-divider">
+                    <span>New here?</span>
+                </div>
+
+                <button 
+                    type="button"
+                    onclick="goToPage('register')" 
+                    class="btn btn-secondary w-full py-2"
+                >
+                    Create an Account
+                </button>
+
+                <div class="auth-footer">
+                    <small class="text-gray-500">
+                        This is a demo trading platform with virtual money
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Page -->
+        <div id="page-register" class="page hidden">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h2 class="text-3xl font-bold mb-2">Create Trading Account</h2>
+                    <p class="text-gray-400">Join thousands of traders worldwide</p>
+                </div>
+
+                <div id="register-error" class="error-message hidden mb-4"></div>
+                <div id="register-success" class="success-message hidden mb-4"></div>
+
+                <form id="register-form" onsubmit="handleRegister(event)" class="auth-form">
+                    <div class="form-group">
+                        <label for="register-username" class="form-label">Username</label>
+                        <div class="form-input-wrapper">
+                            <input 
+                                type="text" 
+                                id="register-username" 
+                                name="username"
+                                required 
+                                placeholder="Choose a unique username" 
+                                class="form-input"
+                                minlength="3"
+                                maxlength="50"
+                                pattern="[a-zA-Z0-9_-]+"
+                                title="Only letters, numbers, underscore, and dash allowed"
+                            >
+                        </div>
+                        <small class="form-hint">3-50 characters (letters, numbers, _, -)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-email" class="form-label">Email</label>
+                        <div class="form-input-wrapper">
+                            <input 
+                                type="email" 
+                                id="register-email" 
+                                name="email"
+                                required 
+                                placeholder="your@email.com" 
+                                class="form-input"
+                                autocomplete="email"
+                            >
+                        </div>
+                        <small class="form-hint">We'll never share your email</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="register-password" class="form-label">Password</label>
+                        <div class="form-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="register-password" 
+                                name="password"
+                                required 
+                                placeholder="Create a strong password" 
+                                class="form-input"
+                                minlength="8"
+                                autocomplete="new-password"
+                            >
+                        </div>
+                        <small class="form-hint">
+                            Must have: 8+ chars, 1 uppercase, 1 digit, 1 special char (!@#$%^&*)
+                        </small>
+                        <div class="password-requirements">
+                            <div class="requirement" id="req-length">
+                                <span class="req-icon">○</span> At least 8 characters
+                            </div>
+                            <div class="requirement" id="req-upper">
+                                <span class="req-icon">○</span> One uppercase letter
+                            </div>
+                            <div class="requirement" id="req-digit">
+                                <span class="req-icon">○</span> One digit
+                            </div>
+                            <div class="requirement" id="req-special">
+                                <span class="req-icon">○</span> One special character (!@#$%^&*)
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-full py-3 font-semibold" id="register-submit">
+                        <span id="register-btn-text">Create Account</span>
+                        <span id="register-spinner" class="hidden ml-2">⏳</span>
+                    </button>
+                </form>
+
+                <div class="auth-divider">
+                    <span>Already have an account?</span>
+                </div>
+
+                <button 
+                    type="button"
+                    onclick="goToPage('login')" 
+                    class="btn btn-secondary w-full py-2"
+                >
+                    Login Here
+                </button>
+
+                <div class="auth-footer">
+                    <small class="text-gray-500">
+                        Starting balance: $1,000 virtual USD
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="page-dashboard" class="page hidden">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+                <div class="stat-card">
+                    <div class="stat-label">Balance</div>
+                    <div class="stat-value" id="stat-balance">$1,000.00</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total P&L</div>
+                    <div class="stat-value" id="stat-pnl">$0.00</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Win Rate</div>
+                    <div class="stat-value" id="stat-winrate">0%</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Trades</div>
+                    <div class="stat-value" id="stat-trades">0</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Trading Panel -->
+                <div class="card lg:col-span-2">
+                    <h3 class="text-2xl font-bold mb-6">Live Market</h3>
+                    
+                    <!-- Price Table -->
+                    <div class="mb-8">
+                        <h4 class="text-lg font-semibold mb-4">Current Prices</h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full">
+                                <thead>
+                                    <tr class="border-b border-gray-600">
+                                        <th class="text-left py-2">Pair</th>
+                                        <th class="text-right py-2">Price</th>
+                                        <th class="text-right py-2">Bid</th>
+                                        <th class="text-right py-2">Ask</th>
+                                        <th class="text-right py-2">Change</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="price-table" class="text-sm">
+                                    <tr class="border-b border-gray-700">
+                                        <td colspan="5" class="py-4 text-center text-gray-400">Loading prices...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Trade Execution -->
+                    <h4 class="text-lg font-semibold mb-4">Execute Trade</h4>
+                    <form id="trade-form" onsubmit="executeTrade(event)" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-sm mb-2">Currency Pair</label>
+                            <select id="trade-pair" class="form-input w-full" required>
+                                <option value="">Select pair...</option>
+                                <option value="EUR/USD">EUR/USD</option>
+                                <option value="GBP/USD">GBP/USD</option>
+                                <option value="USD/JPY">USD/JPY</option>
+                                <option value="XAU/USD">XAU/USD</option>
+                                <option value="USD/CHF">USD/CHF</option>
+                                <option value="AUD/USD">AUD/USD</option>
+                                <option value="NZD/USD">NZD/USD</option>
+                                <option value="USD/CAD">USD/CAD</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm mb-2">Amount ($)</label>
+                            <input type="number" id="trade-amount" class="form-input w-full" min="0.01" step="0.01" required placeholder="100">
+                        </div>
+                        <div class="flex items-end">
+                            <button type="submit" class="btn btn-success w-full">Execute Trade</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="card">
+                    <h3 class="text-xl font-bold mb-6">Quick Stats</h3>
+                    <div class="space-y-4">
+                        <div class="stat-item">
+                            <div class="stat-item-label">Sharpe Ratio</div>
+                            <div class="stat-item-value" id="quick-sharpe">0.00</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-item-label">Profit Factor</div>
+                            <div class="stat-item-value" id="quick-pf">0.00</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-item-label">Max Drawdown</div>
+                            <div class="stat-item-value" id="quick-dd">0.00</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-item-label">Best Pair</div>
+                            <div class="stat-item-value" id="quick-pair">--</div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary w-full mt-6" onclick="goToPage('analytics')">View Full Analytics</button>
+                </div>
+            </div>
+
+            <!-- Recent Trades -->
+            <div class="card">
+                <h3 class="text-2xl font-bold mb-6">Recent Trades</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-600">
+                                <th class="text-left py-3 px-4">Pair</th>
+                                <th class="text-right py-3 px-4">Amount</th>
+                                <th class="text-right py-3 px-4">Result</th>
+                                <th class="text-right py-3 px-4">P&L</th>
+                                <th class="text-right py-3 px-4">Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="trades-table">
+                            <tr class="border-b border-gray-700">
+                                <td colspan="5" class="py-4 text-center text-gray-400">No trades yet</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Page -->
+        <div id="page-analytics" class="page hidden">
+            <h2 class="text-3xl font-bold mb-8">Trading Analytics</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="card">
+                    <h3 class="text-xl font-bold mb-4">Performance Metrics</h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between">
+                            <span>Total P&L</span>
+                            <span id="analytics-pnl" class="font-bold">$0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Win Rate</span>
+                            <span id="analytics-wr" class="font-bold">0%</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Sharpe Ratio</span>
+                            <span id="analytics-sharpe" class="font-bold">0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Profit Factor</span>
+                            <span id="analytics-pf" class="font-bold">0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Max Drawdown</span>
+                            <span id="analytics-dd" class="font-bold">$0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Largest Win</span>
+                            <span id="analytics-win" class="font-bold text-green-400">$0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Largest Loss</span>
+                            <span id="analytics-loss" class="font-bold text-red-400">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-xl font-bold mb-4">Risk Metrics</h3>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between">
+                            <span>Volatility</span>
+                            <span id="risk-vol" class="font-bold">0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Value at Risk (95%)</span>
+                            <span id="risk-var" class="font-bold">$0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Expected Shortfall</span>
+                            <span id="risk-es" class="font-bold">$0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Risk/Reward Ratio</span>
+                            <span id="risk-rr" class="font-bold">0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Avg Win</span>
+                            <span id="risk-avgwin" class="font-bold text-green-400">$0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Avg Loss</span>
+                            <span id="risk-avgloss" class="font-bold text-red-400">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-8">
+                <h3 class="text-xl font-bold mb-4">Performance by Pair</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="pair-stats">
+                    <div class="text-center py-8 text-gray-400">No trading data yet</div>
+                </div>
+            </div>
+
+            <button class="btn btn-secondary" onclick="goToPage('dashboard')">Back to Dashboard</button>
+        </div>
+
+        <!-- Leaderboard Page -->
+        <div id="page-leaderboard" class="page hidden">
+            <h2 class="text-3xl font-bold mb-8">Global Leaderboard</h2>
+            
+            <div class="card">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-gray-600">
+                            <th class="text-left py-3 px-4">Rank</th>
+                            <th class="text-left py-3 px-4">Trader</th>
+                            <th class="text-right py-3 px-4">Balance</th>
+                            <th class="text-right py-3 px-4">P&L</th>
+                            <th class="text-right py-3 px-4">Win Rate</th>
+                            <th class="text-right py-3 px-4">Trades</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaderboard-table">
+                        <tr class="border-b border-gray-700">
+                            <td colspan="6" class="py-4 text-center text-gray-400">Loading leaderboard...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <button class="btn btn-secondary mt-6" onclick="goToPage('dashboard')">Back to Dashboard</button>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="page-profile" class="page hidden">
+            <div class="card max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold mb-6">User Profile</h2>
+                
+                <div class="space-y-4 mb-8">
+                    <div class="profile-field">
+                        <label>Username</label>
+                        <span id="profile-username" class="text-lg font-semibold">--</span>
+                    </div>
+                    <div class="profile-field">
+                        <label>Email</label>
+                        <span id="profile-email" class="text-lg">--</span>
+                    </div>
+                    <div class="profile-field">
+                        <label>Account Balance</label>
+                        <span id="profile-balance" class="text-lg font-semibold text-green-400">$1,000.00</span>
+                    </div>
+                    <div class="profile-field">
+                        <label>Member Since</label>
+                        <span id="profile-date" class="text-lg">--</span>
+                    </div>
+                    <div class="profile-field">
+                        <label>Total Trades</label>
+                        <span id="profile-trades" class="text-lg">0</span>
+                    </div>
+                    <div class="profile-field">
+                        <label>Win Rate</label>
+                        <span id="profile-wr" class="text-lg">0%</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-danger w-full" onclick="logout()">Logout</button>
+            </div>
+
+            <button class="btn btn-secondary mt-6" onclick="goToPage('dashboard')">Back to Dashboard</button>
+        </div>
+
+        <!-- Student Dashboard Page -->
+        <div id="page-student-dashboard" class="page hidden">
+            <div id="student-dashboard-content"></div>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div id="success-message" class="success-message hidden">
+        <span id="success-text"></span>
+    </div>
+
+    <!-- Error Message -->
+    <div id="error-message" class="error-message fixed hidden">
+        <span id="error-text"></span>
+        <button onclick="hideError()" class="ml-4">✕</button>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="loading-spinner hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,372 @@
+╔════════════════════════════════════════════════════════════════════════════╗
+║           RJW GLOBAL FX - FastAPI Backend Project Structure                ║
+║        Simulated Forex Trading Platform for Kenyan University Students     ║
+╚════════════════════════════════════════════════════════════════════════════╝
+
+PROJECT ROOT: fastapi_backend/
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ CORE APPLICATION FILES                                                      │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+main.py
+  ├─ FastAPI application entry point
+  ├─ CORS middleware setup (localhost:3000)
+  ├─ Lifespan events (startup/shutdown)
+  ├─ Database initialization
+  └─ Root endpoint with API info
+
+requirements.txt
+  └─ All Python dependencies (FastAPI, SQLAlchemy, Pydantic, JWT, etc.)
+
+pyproject.toml
+  └─ Project metadata and build configuration
+
+.env
+  └─ Environment variables (development mode with SQLite)
+
+.env.example
+  └─ Template for environment configuration
+
+Dockerfile
+  └─ Docker containerization for production
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ APP FOLDER STRUCTURE                                                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+app/
+│
+├── __init__.py
+│
+├── core/
+│   ├── __init__.py
+│   ├── config.py ..................... Settings & environment variables
+│   │                                  - DATABASE_URL
+│   │                                  - SECRET_KEY, JWT config
+│   │                                  - CORS_ORIGINS
+│   │                                  - MIN_STAKE_KES (50)
+│   │                                  - STARTING_BALANCE_KES (129,500)
+│   │                                  - SIMULATION_DISCLAIMER
+│   │
+│   ├── security.py ................... JWT & password utilities
+│   │                                  - create_access_token()
+│   │                                  - decode_token()
+│   │                                  - hash_password()
+│   │                                  - verify_password()
+│   │
+│   └── database.py ................... SQLAlchemy async setup
+│                                      - engine, AsyncSessionLocal
+│                                      - get_db() dependency
+│                                      - init_db(), close_db()
+│
+├── models/ ........................... SQLAlchemy ORM models
+│   ├── __init__.py
+│   ├── user.py ....................... User model
+│   │                                  - id (UUID)
+│   │                                  - username, email
+│   │                                  - password_hash
+│   │                                  - balance (KES)
+│   │                                  - is_active, is_admin
+│   │                                  - created_at, updated_at
+│   │
+│   ├── trade.py ...................... Trade model
+│   │                                  - id, user_id
+│   │                                  - pair, trade_type (BUY/SELL)
+│   │                                  - amount, entry_price, exit_price
+│   │                                  - stop_loss, take_profit
+│   │                                  - status (OPEN/CLOSED/CANCELLED)
+│   │                                  - pnl, pnl_percent
+│   │                                  - created_at, closed_at
+│   │
+│   └── portfolio.py .................. Portfolio model
+│                                      - user statistics & metrics
+│                                      - win_rate, level, badges
+│
+├── schemas/ .......................... Pydantic validation schemas
+│   ├── __init__.py
+│   ├── user.py ....................... User schemas
+│   │                                  - UserCreate (register)
+│   │                                  - LoginRequest
+│   │                                  - UserResponse
+│   │                                  - TokenResponse (with disclaimer)
+│   │
+│   ├── trade.py ...................... Trade schemas
+│   │                                  - TradeCreate
+│   │                                  - TradeResponse (with disclaimer)
+│   │
+│   ├── portfolio.py .................. Portfolio schemas
+│   │                                  - PortfolioResponse
+│   │
+│   └── common.py ..................... Common schemas
+│                                      - HealthResponse
+│                                      - MessageResponse
+│                                      - ErrorResponse
+│
+├── services/ ......................... Business logic layer
+│   ├── __init__.py
+│   ├── user_service.py ............... User operations
+│   │                                  - create_user()
+│   │                                  - authenticate_user()
+│   │                                  - get_user_by_id/username/email()
+│   │                                  - update_user_balance()
+│   │
+│   └── trade_service.py .............. Trade operations
+│                                      - create_trade()
+│                                      - close_trade() with P&L calc
+│                                      - get_user_trades()
+│                                      - get_open_trades()
+│                                      - get_simulated_price()
+│
+├── api/ ............................. API route handlers
+│   ├── __init__.py
+│   ├── auth.py ....................... Authentication endpoints
+│   │                                  - POST /api/auth/register
+│   │                                  - POST /api/auth/login
+│   │
+│   ├── trade.py ...................... Trade endpoints
+│   │                                  - POST /api/trades/ (create)
+│   │                                  - GET /api/trades/ (list)
+│   │                                  - GET /api/trades/open
+│   │                                  - GET /api/trades/{id}
+│   │                                  - POST /api/trades/{id}/close
+│   │
+│   └── health.py ..................... Health check
+│                                      - GET /health
+│
+└── utils/ ........................... Utilities
+    ├── __init__.py
+    ├── logger.py ..................... Logging configuration
+    │                                  - File & console logging
+    │                                  - Rotating file handler
+    │
+    └── dependencies.py ............... Dependency injection
+                                        - get_current_user() dependency
+                                        - JWT token validation
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ API ENDPOINTS SUMMARY                                                       │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+HEALTH CHECK
+  GET /health
+    └─ Response: { status, version, environment }
+
+AUTHENTICATION
+  POST /api/auth/register
+    ├─ Body: { username, email, password }
+    └─ Response: { access_token, token_type, user, disclaimer }
+  
+  POST /api/auth/login
+    ├─ Body: { username, password }
+    └─ Response: { access_token, token_type, user, disclaimer }
+
+TRADES (All require Authorization Bearer token)
+  POST /api/trades/
+    ├─ Body: { pair, trade_type, amount, entry_price, stop_loss, take_profit }
+    └─ Response: TradeResponse (with disclaimer)
+  
+  GET /api/trades/
+    └─ Response: [TradeResponse] (all trades)
+  
+  GET /api/trades/open
+    └─ Response: [TradeResponse] (only open trades)
+  
+  GET /api/trades/{trade_id}
+    └─ Response: TradeResponse
+  
+  POST /api/trades/{trade_id}/close
+    ├─ Query: exit_price
+    └─ Response: TradeResponse (with P&L calculated)
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ DATABASE SCHEMA                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+USERS TABLE
+  ├─ id (UUID, Primary Key)
+  ├─ username (String, Unique)
+  ├─ email (String, Unique)
+  ├─ password_hash (String)
+  ├─ balance (Float, Default: 129,500 KES)
+  ├─ currency (String, Default: "KES")
+  ├─ is_active (Boolean)
+  ├─ is_admin (Boolean)
+  ├─ created_at (DateTime)
+  └─ updated_at (DateTime)
+
+TRADES TABLE
+  ├─ id (UUID, Primary Key)
+  ├─ user_id (UUID, Foreign Key → users.id)
+  ├─ pair (String)
+  ├─ trade_type (Enum: BUY, SELL)
+  ├─ amount (Float)
+  ├─ entry_price (Float)
+  ├─ exit_price (Float, Nullable)
+  ├─ stop_loss (Float)
+  ├─ take_profit (Float)
+  ├─ status (Enum: OPEN, CLOSED, CANCELLED)
+  ├─ pnl (Float)
+  ├─ pnl_percent (Float)
+  ├─ created_at (DateTime)
+  └─ closed_at (DateTime, Nullable)
+
+PORTFOLIOS TABLE
+  ├─ id (UUID, Primary Key)
+  ├─ user_id (UUID, Foreign Key → users.id, Unique)
+  ├─ total_trades (Integer)
+  ├─ winning_trades (Integer)
+  ├─ losing_trades (Integer)
+  ├─ total_pnl (Float)
+  ├─ win_rate (Float)
+  ├─ average_win (Float)
+  ├─ average_loss (Float)
+  ├─ max_win (Float)
+  ├─ max_loss (Float)
+  ├─ daily_pnl (Float)
+  ├─ monthly_pnl (Float)
+  ├─ level (Integer)
+  ├─ badge (String)
+  ├─ created_at (DateTime)
+  └─ updated_at (DateTime)
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ CONFIGURATION & CONSTANTS                                                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+FOREX PAIRS (Simulated Prices)
+  ├─ EUR/USD ........... 1.0850
+  ├─ GBP/USD ........... 1.2750
+  ├─ USD/JPY ........... 149.50
+  ├─ USD/CHF ........... 0.8850
+  ├─ AUD/USD ........... 0.6550
+  ├─ USD/CAD ........... 1.3250
+  ├─ XAU/USD ........... 2050.00 (Gold)
+  └─ BTC/USD ........... 42500.00 (Bitcoin)
+
+SIMULATION SETTINGS
+  ├─ Min Stake .................... KSh 50
+  ├─ Starting Balance ............. KSh 129,500
+  ├─ Currency ..................... KES (Kenyan Shilling)
+  ├─ Price Volatility ............. ±0.5% (simulated)
+  └─ Disclaimer ................... "This is a simulated forex game..."
+
+SECURITY
+  ├─ JWT Algorithm ................ HS256
+  ├─ Token Expiration ............. 30 minutes
+  ├─ Password Hashing ............. Bcrypt (passlib)
+  ├─ CORS Origins ................. localhost:3000, 127.0.0.1:3000
+  └─ Trusted Hosts ................ localhost, 127.0.0.1
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ QUICK START COMMANDS                                                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run application (auto-reload)
+python main.py
+
+# Or with uvicorn directly
+uvicorn main:app --reload
+
+# Access API docs
+http://localhost:8000/docs        # Swagger UI
+http://localhost:8000/redoc       # ReDoc
+
+# Health check
+curl http://localhost:8000/health
+
+# Run tests
+pytest
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ KEY FEATURES                                                                │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+✅ Async/Await Support
+   └─ SQLAlchemy async ORM, FastAPI async handlers
+
+✅ JWT Authentication
+   └─ Secure token-based auth with 30-min expiration
+
+✅ Automatic API Documentation
+   └─ Swagger UI & ReDoc (interactive testing)
+
+✅ Pydantic Validation
+   └─ Request/response validation with auto-serialization
+
+✅ Database Migrations
+   └─ Tables auto-created on startup
+
+✅ Simulated Forex Trading
+   └─ KES currency, min KSh 50, P&L calculations
+
+✅ Error Handling
+   └─ Comprehensive error responses with error codes
+
+✅ CORS Support
+   └─ Configured for frontend (localhost:3000)
+
+✅ Logging
+   └─ File & console logging with rotation
+
+✅ Docker Ready
+   └─ Dockerfile included for containerization
+
+✅ Production Ready
+   └─ Environment-based configuration
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ FILE TREE                                                                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+fastapi_backend/
+├── app/
+│   ├── __init__.py
+│   ├── api/
+│   │   ├── __init__.py
+│   │   ├── auth.py (154 lines)
+│   │   ├── trade.py (123 lines)
+│   │   └── health.py (13 lines)
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── config.py (54 lines)
+│   │   ├── security.py (45 lines)
+│   │   └── database.py (42 lines)
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── user.py (35 lines)
+│   │   ├── trade.py (45 lines)
+│   │   └── portfolio.py (40 lines)
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   ├── user.py (70 lines)
+│   │   ├── trade.py (60 lines)
+│   │   ├── portfolio.py (50 lines)
+│   │   └── common.py (40 lines)
+│   ├── services/
+│   │   ├── __init__.py
+│   │   ├── user_service.py (60 lines)
+│   │   └── trade_service.py (95 lines)
+│   └── utils/
+│       ├── __init__.py
+│       ├── logger.py (30 lines)
+│       └── dependencies.py (45 lines)
+├── main.py (106 lines)
+├── requirements.txt (16 packages)
+├── .env (13 lines)
+├── .env.example (13 lines)
+├── Dockerfile (30 lines)
+├── pyproject.toml (50 lines)
+├── README.md (450+ lines)
+└── logs/ (directory for log files)
+
+═════════════════════════════════════════════════════════════════════════════════
+
+TOTAL: ~1500 lines of production-ready code
+       Complete async FastAPI backend with SQLAlchemy ORM
+       Ready for Kenyan university students to trade forex!
+
+═════════════════════════════════════════════════════════════════════════════════
