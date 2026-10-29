@@ -65,10 +65,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Trusted hosts
+# Trusted hosts (allow Render / production hosts via env)
 app.add_middleware(
     TrustedHostMiddleware,
-    allowed_hosts=["*"] if settings.DEBUG else ["localhost", "127.0.0.1", "*.localhost"]
+    allowed_hosts=settings.ALLOWED_HOSTS,
 )
 
 
@@ -115,14 +115,16 @@ async def global_exception_handler(request, exc):
 
 
 if __name__ == "__main__":
+    import os
     import uvicorn
-    
-    logger.info(f"Starting server on 0.0.0.0:8000")
-    
+
+    port = int(os.getenv("PORT", "8000"))
+    logger.info(f"Starting server on 0.0.0.0:{port}")
+
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
-        port=8000,
-        reload=settings.DEBUG,
+        port=port,
+        reload=settings.DEBUG and settings.ENVIRONMENT == "development",
         log_level=settings.LOG_LEVEL.lower(),
     )

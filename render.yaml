@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: rjw-global-fx-api
+    runtime: python
+    plan: free
+    rootDir: fastapi_backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: ENVIRONMENT
+        value: production
+      - key: DEBUG
+        value: "true"
+      - key: LOG_LEVEL
+        value: INFO
+      - key: DATABASE_URL
+        value: sqlite+aiosqlite:///./render.db
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "30"
+      - key: CORS_ORIGINS
+        value: '["https://webreact-gules.vercel.app","http://localhost:3000","http://localhost:5173"]'
+      - key: ALLOWED_HOSTS
+        value: '["*"]'
