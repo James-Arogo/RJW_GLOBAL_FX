@@ -7,13 +7,16 @@ All currency in KES (Kenyan Shilling)
 from datetime import datetime, timedelta
 from sqlalchemy import (
     Column, String, Float, DateTime, Boolean, Integer, Enum as SQLEnum,
-    ForeignKey, JSON, Text, Index, Numeric
+    ForeignKey, JSON, Text, Index, Numeric, Uuid
 )
 from sqlalchemy.orm import relationship
-from sqlalchemy.dialects.postgresql import UUID
 import uuid
 from enum import Enum
 from app.core.database import Base
+
+
+# Cross-dialect UUID (CHAR on SQLite, native UUID on Postgres)
+UUID = Uuid
 
 
 # ============================================================================
